@@ -1,46 +1,52 @@
 class VenuesController < ApplicationController
 
   def index
-    matching_venues = venue.all
-    venues = matching_venues.order(:created_at)
+    matching_venues = Venue.all
+    @venues = matching_venues.order(:created_at)
 
-    render({ :template => "venue_templates/venue_list" })
+    render({ :template => "venue_templates/all_venues" })
   end
 
   def show
     venue_id = params.fetch("venue_id")
     matching_venues = Venue.where({ :id => venue_id })
-    the_venue = matching_venues
+    @venue = matching_venues.at(0)
 
-    render({ :template => "venue_templates/details" })
+    render({ :template => "venue_templates/venue_details" })
   end
 
   def create
-    @venue = Venue.new
+    venue = Venue.new
     venue.address = params.fetch("query_address")
-    venue.name = params.fetch("name")
-    venue.neighborhood = params.fetch("neighborhood")
+    venue.name = params.fetch("query_name")
+    venue.neighborhood = params.fetch("query_neighborhood")
     venue.save
 
-    redirect_to("/venues/#{venue.name}")
+    redirect_to("/venues/#{venue.id}")
   end
   
   def update
-    the_id = params.fetch("venue_id")
-
-    @venue = Venue.where({ :id => the_id })
-    venue.address = params.fetch("query_address")
-    venue.name = params.fetch("Query_name")
-    venue.neighborhood = params.fetch("query_neighborhood")
-    venue.save
-    
-    redirect_to("/venues/#{venue.id}")
-  end
+    id = params.fetch("venue_id")
+    @venue = Venue.find_by(id: id) # This finds a single venue or returns nil if not found
+  
+    # Make sure to check if @venue exists before attempting to update it
+    if @venue
+      @venue.address = params.fetch("query_address")
+      @venue.name = params.fetch("query_name")
+      @venue.neighborhood = params.fetch("query_neighborhood")
+      @venue.save
+      
+      redirect_to("/venues/#{@venue.id}")
+    else
+      # Handle the case where the venue was not found
+      redirect_to("/venues", alert: "Venue not found.")
+    end
+  end  
 
   def destroy
-    the_id = params.fetch("venue_id")
-    matching_venues = Venue.where({ :id => the_id })
-    venue = matching_venues
+    id = params.fetch("venue_id")
+    matching_venues = Venue.where({ :id => id })
+    venue = matching_venues.at(0)
     venue.destroy
 
     redirect_to("/venues")

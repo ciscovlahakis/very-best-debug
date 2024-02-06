@@ -3,35 +3,35 @@
 <dl>
   <dt>Address</dt>
   <dd>
-    <%= @the_venue.address %>
+    <%= @venue.address %>
   </dd>
 
   <dt>Name</dt>
   <dd>
-    <p><%= @the_venue.name %></p>
+    <p><%= @venue.name %></p>
   </dd>
 
   <dt>Neighborhood</dt>
   <dd>
-    <%= @the_venue.neighborhood %>
+    <%= @venue.neighborhood %>
   </dd>
 
   <dt>Posted</dt>
   <dd>
-    <%= @the_venue.created_at %>
+    <%= @venue.created_at %>
   </dd>
 
   <dt>Edit venue</dt>
   <dd>
-    <form action="/update_venue/<%= @the_venue.id %>">
+    <form action="/update_venue/<%= @venue.id %>" method="post">
       <label for="browser_venue">Address</label>
-      <input id="browser_venue" type="text" name="query_address" value="<%= @the_venue.address %>" placeholder="Enter an address...">
+      <input id="browser_venue" type="text" name="query_address" value="<%= @venue.address %>" placeholder="Enter an address...">
       
       <label for="browser_name">Name</label>
-      <input id="browser_name" type="text" name="query_name" value="<%= @the_venue.name %>" placeholder="Enter a name...">
+      <input id="browser_name" type="text" name="query_name" value="<%= @venue.name %>" placeholder="Enter a name...">
       
       <label for="browser_neighborhood">Neighborhood</label>
-      <input id="browser_neighborhood" type="text" name="query_neighborhood" value="<%= @the_venue.neighborhood %>" placeholder="Enter a neighborhood...">
+      <input id="browser_neighborhood" type="text" name="query_neighborhood" value="<%= @venue.neighborhood %>" placeholder="Enter a neighborhood...">
 
       <button>Update venue</button>
     </form>
@@ -39,7 +39,7 @@
 
   <dt>Delete venue</dt>
   <dd>
-    <a href="/delete_venue/<% @the_venue.id %>">
+    <a href="/delete_venue/<% @venue.id %>">
       Delete this venue
     </a>
   </dd>
@@ -54,7 +54,7 @@
     <th>Posted</th>
   </tr>
 
-  <% @the_venue.comments.each do |comment| %>
+  <% @venue.comments.each do |comment| %>
   <tr>
     <td>
       <%= comment.commenter.username %>
@@ -74,9 +74,9 @@
 
 <h3>Add a new comment</h3>
 
-<form action="/insert_comment_record">
+<form action="/insert_comment_record" method="post">
   <label for="browser_venue_id">Venue ID</label>
-  <input id="browser_venue_id" type="text" value="<%= @the_venue.id %>" name="query_venue_id">
+  <input id="browser_venue_id" type="text" value="<%= @venue.id %>" name="query_venue_id">
 
   <label for="browser_author_id">Author ID</label>
   <input id="browser_author_id" type="text" name="query_author_id">
